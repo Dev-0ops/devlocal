@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    # ── 개발용 H2 인메모리 DB ──────────────────────────────────────────
+    url: jdbc:h2:mem:tododb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: admin
+    password: admin
+
+    # ── 프로덕션: MySQL로 전환 시 아래 주석 해제 ──────────────────────
+    # url: jdbc:mysql://localhost:3306/tododb?useSSL=false&serverTimezone=Asia/Seoul
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+    # username: root
+    # password: your_password
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop   # 개발용. 프로덕션에서는 validate 또는 none 사용
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+        # dialect: org.hibernate.dialect.MySQLDialect  # MySQL 사용 시
+
+  # H2 콘솔 (개발 편의용: http://localhost:8080/h2-console)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+jwt:
+  secret: "todosecretkey-must-be-at-least-32-characters-long"
+  expiration-ms: 86400000   # 24시간 (ms 단위)
+
+
+logging:
+  level:
+    com.todo: DEBUG
+    org.hibernate.SQL: DEBUG
