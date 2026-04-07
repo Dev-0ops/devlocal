@@ -2,11 +2,14 @@ server:
   port: 8080
 
 spring:
+  config:
+    import: optional:file:./.env[.properties]
+
   datasource:
-    url: jdbc:mysql://localhost:3306/tododb?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: ${DB_URL:jdbc:mysql://localhost:3306/tododb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: Cks9818765!
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
 
   jpa:
     hibernate:
@@ -19,18 +22,18 @@ spring:
 
   data:
     redis:
-      host: localhost
-      port: 6379
-      database: 0
-      timeout: 2s
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      database: ${REDIS_DB:0}
+      timeout: ${REDIS_TIMEOUT:2s}
 
 jwt:
-  secret: "todosecretkey-must-be-at-least-32-characters-long"
-  expiration-ms: 86400000
+  secret: ${JWT_SECRET}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
 
 admin:
-  username: "admin"
-  password: "admin1234!"
+  username: ${ADMIN_USERNAME:admin}
+  password: ${ADMIN_PASSWORD:}
 
 app:
   redis:

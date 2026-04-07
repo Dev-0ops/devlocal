@@ -1,17 +1,31 @@
+server:
+  port: 8080
+
 spring:
+  config:
+    import: optional:file:./.env.test[.properties]
+
   datasource:
-    url: jdbc:mysql://localhost:3306/tododb_test?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: ${TEST_DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: Cks9818765!
+    username: ${TEST_DB_USERNAME}
+    password: ${TEST_DB_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
   data:
     redis:
-      host: localhost
-      port: 6379
-      timeout: 2s
+      host: ${TEST_REDIS_HOST}
+      port: ${TEST_REDIS_PORT}
+      database: ${TEST_REDIS_DB}
+      timeout: ${TEST_REDIS_TIMEOUT}
 
 app:
   redis:
@@ -19,8 +33,16 @@ app:
       todo-all-seconds: 60
       todo-by-id-seconds: 300
       session-seconds: 86400
+
 jwt:
-  secret: "testsecretkey-must-be-at-least-32-characters-long"
-  expiration-ms: 86400000
+  secret: ${TEST_JWT_SECRET}
+  expiration-ms: ${TEST_JWT_EXPIRATION_MS}
 
+admin:
+  username: ${TEST_ADMIN_USERNAME}
+  password: ${TEST_ADMIN_PASSWORD}
 
+logging:
+  level:
+    com.todo: DEBUG
+    org.hibernate.SQL: DEBUG
